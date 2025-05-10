@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Unity-2.6.1/src/unity.h"
+#include "game_attributes.h"
 
 // Define empty setUp and tearDown functions
 void setUp(void)
