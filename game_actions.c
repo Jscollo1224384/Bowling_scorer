@@ -36,3 +36,9 @@ void destroy_game(game_t *game) {
     free(game);
 }
 
+void record_roll(game_t *game, int roll, int frame_number) {
+    if (game == NULL || frame_number < 0 || frame_number >= NUM_OF_FRAMES) {
+        return; // Invalid game or frame number
+    }
+    game->frames[frame_number]->roll_1 = roll;
+}
