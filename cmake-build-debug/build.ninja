@@ -67,6 +67,12 @@ build CMakeFiles/Bowling_Scorer.dir/Unity-2.6.1/src/unity.c.o: C_COMPILER__Bowli
   OBJECT_DIR = CMakeFiles/Bowling_Scorer.dir
   OBJECT_FILE_DIR = CMakeFiles/Bowling_Scorer.dir/Unity-2.6.1/src
 
+build CMakeFiles/Bowling_Scorer.dir/game_attributes.c.o: C_COMPILER__Bowling_Scorer_unscanned_Debug /Users/jscollo/C_Projects/Bowling_Scorer/game_attributes.c || cmake_object_order_depends_target_Bowling_Scorer
+  DEP_FILE = CMakeFiles/Bowling_Scorer.dir/game_attributes.c.o.d
+  FLAGS = -g -std=gnu99 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk -mmacosx-version-min=15.3 -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/Bowling_Scorer.dir
+  OBJECT_FILE_DIR = CMakeFiles/Bowling_Scorer.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Bowling_Scorer
@@ -75,7 +81,7 @@ build CMakeFiles/Bowling_Scorer.dir/Unity-2.6.1/src/unity.c.o: C_COMPILER__Bowli
 #############################################
 # Link the executable Bowling_Scorer
 
-build Bowling_Scorer: C_EXECUTABLE_LINKER__Bowling_Scorer_Debug CMakeFiles/Bowling_Scorer.dir/main.c.o CMakeFiles/Bowling_Scorer.dir/test_cases.c.o CMakeFiles/Bowling_Scorer.dir/Unity-2.6.1/src/unity.c.o
+build Bowling_Scorer: C_EXECUTABLE_LINKER__Bowling_Scorer_Debug CMakeFiles/Bowling_Scorer.dir/main.c.o CMakeFiles/Bowling_Scorer.dir/test_cases.c.o CMakeFiles/Bowling_Scorer.dir/Unity-2.6.1/src/unity.c.o CMakeFiles/Bowling_Scorer.dir/game_attributes.c.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk -mmacosx-version-min=15.3
   OBJECT_DIR = CMakeFiles/Bowling_Scorer.dir
   POST_BUILD = :

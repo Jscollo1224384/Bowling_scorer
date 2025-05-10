@@ -1,0 +1,8 @@
+//
+// Created by Joseph-Scollo on 5/9/25.
+//
+
+#ifndef BOWLING_SCORER_GAME_ATTRIBUTES_H
+#define BOWLING_SCORER_GAME_ATTRIBUTES_H
+
+#endif //BOWLING_SCORER_GAME_ATTRIBUTES_H
