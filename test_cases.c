@@ -30,10 +30,23 @@ void test_a_game_has_ten_frames(void)
         }
     }
     TEST_ASSERT_EQUAL(expected_frames, actual_frames);
+    destroy_game(game);
+}
+
+void test_first_roll_of_frame_was_recorded(void)
+{
+    int roll_to_record = 5;
+
+    game_t *game = create_game();
+    record_roll(game, roll_to_record, 0);
+    TEST_ASSERT_EQUAL(roll_to_record, game->frames[0]->roll_1);
+
+    destroy_game(game);
 }
 void run_tests(void)
 {
     UnityBegin("Running Tests");
     RUN_TEST(test_a_game_has_ten_frames);
+    RUN_TEST(test_first_roll_of_frame_was_recorded);
     UnityEnd();
 }
