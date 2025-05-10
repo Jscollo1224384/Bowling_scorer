@@ -1,0 +1,10 @@
+# ninja log v5
+1	89	1746622971732017484	CMakeFiles/Bowling_Scorer.dir/score_handeling.c.o	abc2c106063d7c7f
+0	208	1746550770698073212	CMakeFiles/Bowling_Scorer.dir/scoring_dictionary/scoring_table.c.o	5523f66e5f10c1f6
+265	329	1746623925923256050	Bowling_Scorer	25f928defeb5bbf3
+0	80	1746223802420296131	CMakeFiles/Bowling_Scorer.dir/Unity-2.6.1/src/unity.c.o	f50fe59069cbe03b
+1	120	1746841997130576685	CMakeFiles/Bowling_Scorer.dir/test_cases.c.o	e1291e1efc2328f4
+0	151	1746841775609829253	CMakeFiles/Bowling_Scorer.dir/main.c.o	38d10f1e0317a7af
+0	93	1746842191333811187	build.ninja	fc911b5ff602758e
+0	57	1746842196152929299	CMakeFiles/Bowling_Scorer.dir/Unity-2.6.1/src/unity.c.o	28f9b54c04eb1560
+57	92	1746842196190540956	Bowling_Scorer	5e553f3a97078a4
