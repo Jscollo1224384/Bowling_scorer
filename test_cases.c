@@ -43,10 +43,22 @@ void test_first_roll_of_frame_was_recorded(void)
 
     destroy_game(game);
 }
+
+void test_second_roll_of_frame_was_recorded(void)
+{
+    int roll_to_record = 6;
+    game_t *game = create_game();
+    record_roll(game, 4, 0);
+    record_roll(game, roll_to_record, 0);
+    TEST_ASSERT_EQUAL(roll_to_record, game->frames[0]->roll_2);
+
+    destroy_game(game);
+}
 void run_tests(void)
 {
     UnityBegin("Running Tests");
     RUN_TEST(test_a_game_has_ten_frames);
     RUN_TEST(test_first_roll_of_frame_was_recorded);
+    RUN_TEST(test_second_roll_of_frame_was_recorded);
     UnityEnd();
 }
