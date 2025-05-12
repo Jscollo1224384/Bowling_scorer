@@ -17,7 +17,7 @@ game_t *create_game(void) {
             destroy_game(game);
             return NULL; // Memory allocation failed
         }
-        game->frames[i]->roll_1 = 0;
+        game->frames[i]->roll_1 = -1; // Initialize to -1 to indicate no roll recorded
         game->frames[i]->roll_2 = 0;
         game->frames[i]->extra_roll = 0;
     }
@@ -40,5 +40,18 @@ void record_roll(game_t *game, int roll, int frame_number) {
     if (game == NULL || frame_number < 0 || frame_number >= NUM_OF_FRAMES) {
         return; // Invalid game or frame number
     }
-    game->frames[frame_number]->roll_1 = roll;
+    if (   frame_number == 9
+        && (game->frames[frame_number]->roll_1 +
+            game->frames[frame_number]->roll_2) == 10)
+    {
+        game->frames[frame_number]->extra_roll = roll;
+        return;
+    }
+    if(game->frames[frame_number]->roll_1 == -1) {
+        game->frames[frame_number]->roll_1 = roll;
+        return;
+    }
+    game->frames[frame_number]->roll_2 = roll;
+
+
 }
