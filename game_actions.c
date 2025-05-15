@@ -143,11 +143,27 @@ void record_roll(game_t *game, int roll, int frame_number, int roll_number) {
         game->frames[frame_number]->extra_roll = roll;
         return;
     }
-    if(game->frames[frame_number]->roll_1 == -1) {
-        game->frames[frame_number]->roll_1 = roll;
-        return;
-    }
-    game->frames[frame_number]->roll_2 = roll;
+}
 
+static void print_frame(game_t *game, int frame_number) {
+    if (game == NULL || frame_number < 0 || frame_number >= NUM_OF_FRAMES) {
+        return; // Invalid game or frame number
+    }
+    printf("Frame %d: Roll 1: %d, Roll 2: %d, Extra Roll: %d\n",
+           frame_number + 1,
+           game->frames[frame_number]->roll_1,
+           game->frames[frame_number]->roll_2,
+           game->frames[frame_number]->extra_roll);
+}
+
+void record_frames(game_t *game, int rolls[10][3]) {
+    for (int i = 0; i < NUM_OF_FRAMES; i++) {
+        for (int j = 0; j < 3; ++j) {
+            record_roll(game, rolls[i][j], i, j);
+            print_frame(game, i);
+        }
+        update_score(game, i);
+    }
 
 }
+
