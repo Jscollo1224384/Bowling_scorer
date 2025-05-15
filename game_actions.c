@@ -3,6 +3,7 @@
 //
 
 #include <stdlib.h>
+#include <printf.h>
 #include "game_attributes.h"
 
 game_t *create_game(void) {
@@ -17,7 +18,7 @@ game_t *create_game(void) {
             destroy_game(game);
             return NULL; // Memory allocation failed
         }
-        game->frames[i]->roll_1 = -1; // Initialize to -1 to indicate no roll recorded
+        game->frames[i]->roll_1 = 0;
         game->frames[i]->roll_2 = 0;
         game->frames[i]->extra_roll = 0;
     }
