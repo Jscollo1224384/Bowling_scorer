@@ -4,11 +4,14 @@
 
 #ifndef BOWLING_SCORER_GAME_ATTRIBUTES_H
 #define BOWLING_SCORER_GAME_ATTRIBUTES_H
+
+#include <stdbool.h>
+
 #define NUM_OF_FRAMES 10
 typedef struct {
-    int roll_1;
-    int roll_2;
-    int extra_roll;
+    int  roll_1;
+    int  roll_2;
+    int  extra_roll;
 } frame_t;
 
 typedef struct {
@@ -17,5 +20,6 @@ typedef struct {
 
 game_t *create_game(void);
 void destroy_game(game_t *game);
-void record_roll(game_t *game, int roll, int frame_number);
+void record_roll(game_t *game, int roll, int frame_number, int roll_number);
+void record_frames(game_t *game, int rolls[10][3]);
 #endif //BOWLING_SCORER_GAME_ATTRIBUTES_H
