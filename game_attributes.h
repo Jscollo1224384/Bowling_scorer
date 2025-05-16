@@ -21,5 +21,10 @@ typedef struct {
 game_t *create_game(void);
 void destroy_game(game_t *game);
 void record_roll(game_t *game, int roll, int frame_number, int roll_number);
-void record_frames(game_t *game, int rolls[10][3]);
+int record_frames(game_t *game, int rolls[10][3]);
+int handle_strike(game_t *game, int frame_number);
+int handle_spare(game_t *game, int frame_number);
+int handle_open_frame(game_t *game, int frame_number);
+int handle_tenth_frame(game_t *game);
+int update_score(game_t *game, int frame_number);
 #endif //BOWLING_SCORER_GAME_ATTRIBUTES_H

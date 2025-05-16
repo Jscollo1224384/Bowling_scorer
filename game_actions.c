@@ -37,7 +37,7 @@ void destroy_game(game_t *game) {
     free(game);
 }
 
-static int handle_strike(game_t *game, int frame_number) {
+int handle_strike(game_t *game, int frame_number) {
     int score = 0;
     if(game->frames[frame_number]->roll_1 == 10){
         if(frame_number == 8){
@@ -54,7 +54,7 @@ static int handle_strike(game_t *game, int frame_number) {
     return score;
 }
 
-static int handle_open_frame(game_t *game, int frame_number) {
+int handle_open_frame(game_t *game, int frame_number) {
     int score = 0;
 
     if (game->frames[frame_number]->roll_1 + game->frames[frame_number]->roll_2 < 10) {
@@ -63,16 +63,16 @@ static int handle_open_frame(game_t *game, int frame_number) {
     return score;
 }
 
-static int handle_tenth_frame(game_t *game) {
+int handle_tenth_frame(game_t *game) {
     int score = 0;
     int last_frame = 9;
     if (game->frames[last_frame]->roll_1 == 10 || game->frames[last_frame]->roll_1 + game->frames[last_frame]->roll_2 == 10) {
-        score += 10 + game->frames[last_frame]->roll_1 + game->frames[last_frame]->roll_2 + game->frames[last_frame]->extra_roll;
+        score += game->frames[last_frame]->roll_1 + game->frames[last_frame]->roll_2 + game->frames[last_frame]->extra_roll;
     }
     return score;
 }
 
-static int handle_spare(game_t *game, int frame_number) {
+int handle_spare(game_t *game, int frame_number) {
     int score = 0;
     if (game->frames[frame_number]->roll_1 + game->frames[frame_number]->roll_2 == 10 && game->frames[frame_number]->roll_1 != 10) {
         score += 10 + game->frames[frame_number + 1]->roll_1;
@@ -80,30 +80,93 @@ static int handle_spare(game_t *game, int frame_number) {
     return score;
 }
 
-void update_score(game_t *game, int frame_number)
-{
-    if (game == NULL || frame_number < 0 || frame_number >= NUM_OF_FRAMES) {
-        return; // Invalid game or frame number
+static void print_score_board(game_t *game, int frame_number) {
+    if (game == NULL) {
+        return; // Invalid game
     }
 
-    int score = 0;
-    for (int i = 0; i <= frame_number; i++) {
-
-       if (i == 9) {
-           score += handle_tenth_frame(game);
-       }
-       if(i < 9) {
-           score += handle_strike(game, i);
-           score += handle_spare(game, i);
-       }
-       score += handle_open_frame(game, i);
-        printf("Score for frame %d: %d\n", i + 1, score);
-
+    if(frame_number != 9) {
+        if (game->frames[frame_number]->roll_1 == 10) {
+            printf(" |-|X|      ");
+        } else if (game->frames[frame_number]->roll_1 + game->frames[frame_number]->roll_2 == 10 &&
+                   game->frames[frame_number]->roll_1 != 10) {
+            printf(" |%d|/|      ", game->frames[frame_number]->roll_2);
+        } else {
+            printf(" |%d|%d|      ", game->frames[frame_number]->roll_1, game->frames[frame_number]->roll_2);
+        }
+    }
+    if(frame_number == 9){
+        if(   game->frames[frame_number]->roll_1 == 10
+           && game->frames[frame_number]->roll_2 == 10
+           && game->frames[frame_number]->extra_roll == 10)
+        {
+            printf(" |X|X|X|");
+        }
+        else if(   game->frames[frame_number]->roll_1 + game->frames[frame_number]->roll_2 == 10
+                && game->frames[frame_number]->roll_1 != 10
+                && game->frames[frame_number]->extra_roll == 10)
+        {
+            printf(" |%d|/|X|", game->frames[frame_number]->roll_2);
+        }
+        else if(   game->frames[frame_number]->roll_1 + game->frames[frame_number]->roll_2 == 10
+                   && game->frames[frame_number]->roll_1 == 10
+                   && game->frames[frame_number]->extra_roll == 10)
+        {
+            printf(" |X|%d|/|",game->frames[frame_number]->roll_2);
+        }
+        else{
+            printf(" |%d|%d| |", game->frames[frame_number]->roll_1, game->frames[frame_number]->roll_2);
+        }
     }
 
 
 }
 
+int update_score(game_t *game, int frame_number)
+{
+    if (game == NULL || frame_number < 0 || frame_number >= NUM_OF_FRAMES) {
+        return 0; // Invalid game or frame number
+    }
+
+    int score = 0;
+    for (int i = 0; i < NUM_OF_FRAMES; ++i) {
+        printf("Frame: %d    ", i + 1);
+    }
+    printf("\n");
+
+    for (int i = 0; i <= frame_number; i++) {
+        print_score_board(game, i);
+    }
+    printf("\n");
+
+    score = 0;
+
+    for (int i = 0; i <= frame_number ; ++i) {
+        if (i == 9) {
+            score += handle_tenth_frame(game);
+        }
+        if(i < 9) {
+            score += handle_strike(game, i);
+            score += handle_spare(game, i);
+        }
+        score += handle_open_frame(game, i);
+
+        if(score > 99) {
+            if(i != 9) {
+                printf("  %d       ", score);
+            }
+            else{
+                printf("   %d     ", score);
+            }
+        }
+        else{
+            printf("  %d        ", score);
+        }
+    }
+    printf("\n\n");
+
+    return score;
+}
 
 static int (check_for_invalid_rolls)(int roll, game_t *game, int frame_number) {
     if (roll < 0 ) {
@@ -117,7 +180,9 @@ static int (check_for_invalid_rolls)(int roll, game_t *game, int frame_number) {
         printf("Invalid roll2\n");
         return 10 - game->frames[frame_number]->roll_1;
     }
-    if (frame_number == 9 && (game->frames[frame_number]->roll_1 + roll) > 10) {
+    if (   frame_number == 9
+        && (game->frames[frame_number]->roll_1 + game->frames[frame_number]->roll_2) != 10
+        && (game->frames[frame_number]->extra_roll > 0)) {
         printf("Invalid roll3\n");
         printf("roll_1: %d, roll_2: %d\n", game->frames[frame_number]->roll_1, game->frames[frame_number]->roll_2);
         printf("roll: %d\n", roll);
@@ -126,44 +191,40 @@ static int (check_for_invalid_rolls)(int roll, game_t *game, int frame_number) {
     return roll;
 }
 
-void record_roll(game_t *game, int roll, int frame_number, int roll_number) {
-   // printf("in record_roll    Roll is %d:\n", roll);
-    if(roll_number == 0){
+void record_roll(game_t *game, int roll, int frame_number, int roll_number)
+{
+    if(roll_number == 0 && frame_number != 9){
         game->frames[frame_number]->roll_1 = check_for_invalid_rolls(roll, game, frame_number);
         return;
     }
-    if(roll_number == 1){
+    if(roll_number == 1 && frame_number != 9){
         game->frames[frame_number]->roll_2 = check_for_invalid_rolls(roll, game, frame_number);
         return;
     }
-    if(  frame_number == 9
-       && roll_number == 2
-       && game->frames[frame_number]->roll_1 + game->frames[frame_number]->roll_2 == 10)
+    if(frame_number == 9 && roll_number == 0)
     {
-        game->frames[frame_number]->extra_roll = roll;
+        game->frames[frame_number]->roll_1 = check_for_invalid_rolls(roll, game, frame_number);
+        return;
+    }
+    if(frame_number == 9 && roll_number == 1){
+        game->frames[frame_number]->roll_2 = check_for_invalid_rolls(roll, game, frame_number);
+        return;
+    }
+    if(frame_number == 9 && roll_number == 2){
+        game->frames[frame_number]->extra_roll = check_for_invalid_rolls(roll, game, frame_number);
         return;
     }
 }
 
-static void print_frame(game_t *game, int frame_number) {
-    if (game == NULL || frame_number < 0 || frame_number >= NUM_OF_FRAMES) {
-        return; // Invalid game or frame number
-    }
-    printf("Frame %d: Roll 1: %d, Roll 2: %d, Extra Roll: %d\n",
-           frame_number + 1,
-           game->frames[frame_number]->roll_1,
-           game->frames[frame_number]->roll_2,
-           game->frames[frame_number]->extra_roll);
-}
-
-void record_frames(game_t *game, int rolls[10][3]) {
+int record_frames(game_t *game, int rolls[10][3])
+{
+    int score = 0;
     for (int i = 0; i < NUM_OF_FRAMES; i++) {
         for (int j = 0; j < 3; ++j) {
             record_roll(game, rolls[i][j], i, j);
-            print_frame(game, i);
         }
-        update_score(game, i);
+        score = update_score(game, i);
     }
-
+    return score;
 }
 
