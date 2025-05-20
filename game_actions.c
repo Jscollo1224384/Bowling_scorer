@@ -44,6 +44,7 @@ int handle_strike(game_t *game, int frame_number) {
             score += 10 + game->frames[frame_number + 1]->roll_1 + game->frames[frame_number + 1]->roll_2;
             return score;
         }
+
         if(game->frames[frame_number + 1]->roll_1 != 10){
             score += 10 + game->frames[frame_number + 1]->roll_1 + game->frames[frame_number + 1]->roll_2;
         }

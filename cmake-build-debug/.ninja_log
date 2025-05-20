@@ -71,3 +71,7 @@
 0	56	1747409321468785580	CMakeFiles/Bowling_Scorer.dir/test_cases.c.o	e1291e1efc2328f4
 0	61	1747409321474353949	CMakeFiles/Bowling_Scorer.dir/game_actions.c.o	77b8caa16e9c0f1d
 61	105	1747409321517563616	Bowling_Scorer	823314301e228cce
+3	44	1747655599612112541	CMakeFiles/Bowling_Scorer.dir/main.c.o	38d10f1e0317a7af
+3	45	1747655599613662603	CMakeFiles/Bowling_Scorer.dir/test_cases.c.o	e1291e1efc2328f4
+4	48	1747655599616950433	CMakeFiles/Bowling_Scorer.dir/game_actions.c.o	77b8caa16e9c0f1d
+48	86	1747655599655050328	Bowling_Scorer	823314301e228cce
