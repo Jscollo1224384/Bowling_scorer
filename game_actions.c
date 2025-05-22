@@ -4,52 +4,41 @@
 
 #include <stdlib.h>
 #include <printf.h>
+#include <string.h>
 #include "game_attributes.h"
 
-game_t *create_game(void) {
-    game_t *game = malloc(sizeof(game_t));
-    if (game == NULL) {
-        return NULL; // Memory allocation failed
-    }
-
-    for (int i = 0; i < NUM_OF_FRAMES; i++) {
-        game->frames[i] = malloc(sizeof(frame_t));
-        if (game->frames[i] == NULL) {
-            destroy_game(game);
-            return NULL; // Memory allocation failed
-        }
-        game->frames[i]->roll_1 = 0;
-        game->frames[i]->roll_2 = 0;
-        game->frames[i]->extra_roll = 0;
-    }
-
+game_t create_game(void) {
+    game_t game;
+    memset(&game, 0, sizeof(game_t));
     return game;
 }
 
-void destroy_game(game_t *game) {
-    if (game == NULL) {
-        return;
-    }
+void destroy_game(game_t game) {
 
-    for (int i = 0; i < NUM_OF_FRAMES; i++) {
-        free(game->frames[i]);
+    for (int i = 0; i < NUM_OF_FRAMES; ++i) {
+        game.frames[i].roll_1 = 0;
+        game.frames[i].roll_2 = 0;
+        game.frames[i].extra_roll = 0;
     }
-    free(game);
 }
 
-int handle_strike(game_t *game, int frame_number) {
+int handle_strike(game_t game, int frame_number) {
     int score = 0;
-    if(game->frames[frame_number]->roll_1 == 10){
-        if(frame_number == 8){
-            score += 10 + game->frames[frame_number + 1]->roll_1 + game->frames[frame_number + 1]->roll_2;
-            return score;
-        }
+    int next_frame_first_roll              = game.frames[NEXT_FRAME(frame_number)].roll_1;
+    int frame_after_next_first_roll        = game.frames[NEXT_FRAME(NEXT_FRAME(frame_number))].roll_1;
+    int next_frame_second_roll             = game.frames[NEXT_FRAME(frame_number)].roll_2;
 
-        if(game->frames[frame_number + 1]->roll_1 != 10){
-            score += 10 + game->frames[frame_number + 1]->roll_1 + game->frames[frame_number + 1]->roll_2;
+    int combined_consecutive_frames_roll_1 = next_frame_first_roll + frame_after_next_first_roll;
+    int combined_rolls_of_next_frame       = next_frame_first_roll + next_frame_second_roll;
+
+    if (STRIKE(game.frames[frame_number].roll_1)){
+        if(   STRIKE(game.frames[NEXT_FRAME(frame_number)].roll_1) == false
+           || STRIKE(game.frames[NEXT_FRAME(frame_number)].roll_1) && NEXT_FRAME(frame_number) == LAST_FRAME)
+        {
+            score += 10 + combined_rolls_of_next_frame;
         }
         else{
-            score += 10 + game->frames[frame_number + 1]->roll_1 + game->frames[frame_number + 2]->roll_1;
+            score += 10 + combined_consecutive_frames_roll_1;
         }
     }
     return score;
