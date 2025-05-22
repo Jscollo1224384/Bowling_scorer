@@ -74,37 +74,34 @@ static void print_score_board(game_t game, int frame_number) {
         return; // Invalid game or frame number
     }
 
-    if(frame_number != 9) {
-        if (game.frames[frame_number].roll_1 == 10) {
-            printf(" |-|X|      ");
-        } else if (game.frames[frame_number].roll_1 + game.frames[frame_number].roll_2 == 10 &&
-                   game.frames[frame_number].roll_1 != 10) {
+    if(frame_number != LAST_FRAME) {
+        if (STRIKE(game.frames[frame_number].roll_1)) {
+            printf(" |X|-|      ");
+        } else if (SPARE(game.frames[frame_number].roll_1, game.frames[frame_number].roll_2)) {
             printf(" |%d|/|      ", game.frames[frame_number].roll_2);
         } else {
             printf(" |%d|%d|      ", game.frames[frame_number].roll_1, game.frames[frame_number].roll_2);
         }
     }
-    if(frame_number == 9){
-        if(   game.frames[frame_number].roll_1 == 10
-           && game.frames[frame_number].roll_2 == 10
-           && game.frames[frame_number].extra_roll == 10)
+    if(frame_number == LAST_FRAME){
+        if(   STRIKE(game.frames[frame_number].roll_1)
+           && STRIKE(game.frames[frame_number].roll_2)
+           && STRIKE(game.frames[frame_number].extra_roll))
         {
             printf(" |X|X|X|");
         }
-        else if(   game.frames[frame_number].roll_1 + game.frames[frame_number].roll_2 == 10
-                && game.frames[frame_number].roll_1 != 10
+        else if(   SPARE(game.frames[frame_number].roll_1, game.frames[frame_number].roll_2)
                 && game.frames[frame_number].extra_roll == 10)
         {
             printf(" |%d|/|X|", game.frames[frame_number].roll_2);
         }
-        else if(   game.frames[frame_number].roll_1 + game.frames[frame_number].roll_2 == 10
-                   && game.frames[frame_number].roll_1 == 10
-                   && game.frames[frame_number].extra_roll == 10)
+        else if(   STRIKE(game.frames[frame_number].roll_1)
+                && SPARE(game.frames[frame_number].roll_2, game.frames[frame_number].extra_roll))
         {
             printf(" |X|%d|/|",game.frames[frame_number].roll_2);
         }
         else{
-            printf(" |%d|%d| |", game.frames[frame_number].roll_1, game.frames[frame_number].roll_2);
+            printf(" |%d|%d|-|", game.frames[frame_number].roll_1, game.frames[frame_number].roll_2);
         }
     }
 
