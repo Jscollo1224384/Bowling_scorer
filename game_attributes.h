@@ -8,6 +8,12 @@
 #include <stdbool.h>
 
 #define NUM_OF_FRAMES 10
+#define LAST_FRAME   (NUM_OF_FRAMES - 1)
+#define STRIKE(x)    ((x) == 10)
+#define SPARE(x, y) (((x) + (y) == 10) && ((x) != 10))
+#define OPEN_FRAME(x, y) ((x) + (y) < 10)
+#define NEXT_FRAME(x) ((x) + 1)
+
 typedef struct {
     int  roll_1;
     int  roll_2;
