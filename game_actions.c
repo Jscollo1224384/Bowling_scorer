@@ -6,6 +6,7 @@
 #include <printf.h>
 #include <string.h>
 #include "game_attributes.h"
+#define FRAME_WIDTH 10
 
 game_t create_game(void) {
     game_t game;
@@ -104,7 +105,7 @@ static void print_score_board(game_t game, int frame_number) {
             printf(" |X|X|X|");
         }
         else if(   SPARE(game.frames[frame_number].roll_1, game.frames[frame_number].roll_2)
-                && game.frames[frame_number].extra_roll == 10)
+                && STRIKE(game.frames[frame_number].extra_roll))
         {
             printf(" |%d|/|X|", game.frames[frame_number].roll_2);
         }
@@ -112,6 +113,16 @@ static void print_score_board(game_t game, int frame_number) {
                 && SPARE(game.frames[frame_number].roll_2, game.frames[frame_number].extra_roll))
         {
             printf(" |X|%d|/|",game.frames[frame_number].roll_2);
+        }
+        else if(   STRIKE(game.frames[frame_number].roll_1)
+                && OPEN_FRAME(game.frames[frame_number].roll_2, game.frames[frame_number].extra_roll))
+        {
+            printf(" |X|%d|%d|", game.frames[frame_number].roll_2, game.frames[frame_number].extra_roll);
+        }
+        else if(   SPARE(game.frames[frame_number].roll_1, game.frames[frame_number].roll_2)
+                && OPEN_FRAME(game.frames[frame_number].extra_roll, 0))
+        {
+            printf(" |%d|/|%d|", game.frames[frame_number].roll_2, game.frames[frame_number].extra_roll);
         }
         else{
             printf(" |%d|%d|-|", game.frames[frame_number].roll_1, game.frames[frame_number].roll_2);
@@ -121,22 +132,49 @@ static void print_score_board(game_t game, int frame_number) {
 
 }
 
-int update_score(game_t game, int frame_number)
+
+
+static void print_frame_header(void) {
+    for (int i = 0; i < NUM_OF_FRAMES; ++i) {
+        printf("Frame: %d    ", i + 1);
+    }
+    printf("\n");
+}
+
+static void print_game_results(int print_type, int frame_number, game_t game, int score, int index) {
+    if(print_type == 0) {
+        for (int i = 0; i <= frame_number; i++) {
+            print_score_board(game, i);
+        }
+    }
+    else{
+        if(score > 99) {
+            if(index != 9) {
+                printf("  %d       ", score);
+            }
+            else{
+                printf("   %d     ", score);
+            }
+        }
+        else{
+            printf("  %d        ", score);
+        }
+    }
+}
+
+int update_score(game_t game, int frame_number, int debug)
 {
     if (frame_number < 0 || frame_number >= NUM_OF_FRAMES) {
         return 0; // Invalid game or frame number
     }
 
     int score = 0;
-    for (int i = 0; i < NUM_OF_FRAMES; ++i) {
-        printf("Frame: %d    ", i + 1);
-    }
-    printf("\n");
 
-    for (int i = 0; i <= frame_number; i++) {
-        print_score_board(game, i);
+    if(!debug) {
+        print_frame_header();
+        print_game_results(0, frame_number, game, score, 0);
+        printf("\n");
     }
-    printf("\n");
 
     score = 0;
 
@@ -149,20 +187,14 @@ int update_score(game_t game, int frame_number)
             score += handle_spare(game, i);
         }
         score += handle_open_frame(game, i);
-
-        if(score > 99) {
-            if(i != 9) {
-                printf("  %d       ", score);
-            }
-            else{
-                printf("   %d     ", score);
-            }
-        }
-        else{
-            printf("  %d        ", score);
+        if(!debug) {
+            print_game_results(1, i, game, score, i);
         }
     }
-    printf("\n\n");
+    if(!debug) {
+        printf("\n\n");
+    }
+
 
     return score;
 }
