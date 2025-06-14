@@ -2249,6 +2249,7 @@ int UnityEnd(void)
     if (Unity.TestFailures == 0U)
     {
         UnityPrint(UnityStrOk);
+        printf("\n");
     }
     else
     {
