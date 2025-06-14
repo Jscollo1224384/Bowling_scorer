@@ -33,7 +33,7 @@ int handle_strike(game_t game, int frame_number) {
 
     if (STRIKE(game.frames[frame_number].roll_1)){
         if(   STRIKE(game.frames[NEXT_FRAME(frame_number)].roll_1) == false
-           || STRIKE(game.frames[NEXT_FRAME(frame_number)].roll_1) && NEXT_FRAME(frame_number) == LAST_FRAME)
+           || (STRIKE(game.frames[NEXT_FRAME(frame_number)].roll_1) && NEXT_FRAME(frame_number) == LAST_FRAME))
         {
             score += 10 + combined_rolls_of_next_frame;
         }
@@ -70,6 +70,19 @@ int handle_spare(game_t game, int frame_number) {
 }
 
 static void print_score_board(game_t game, int frame_number) {
+    char strike[]                  = "|X|-|";
+    char spare[]                   = "|%d|/|";
+    char open[]                    = "|%d|%d|";
+    char last_frame[]              = "|%d|%d|-|";
+    char last_frame_spare[]        = "|%d|/|%d|";
+    char last_frame_spare_strike[] = "|%d|/|X|";
+    char last_frame_strike[]       = "|X|%d|%d|";
+    char last_frame_strike_spare[] = "|X|%|/|";
+    char last_frame_two_strikes[]  = "|X|X|%d|";
+    char last_frame_all_strikes[]  = "|X|X|X|";
+
+    int width = 6;
+
     if (frame_number < 0 || frame_number >= NUM_OF_FRAMES) {
         return; // Invalid game or frame number
     }
