@@ -205,11 +205,11 @@ static int (check_for_invalid_rolls)(int roll, game_t *game, int frame_number) {
     }
     if (roll > 10) {
         printf("Invalid roll1\n");
-        return 10;
+        return 0;
     }
-    if (frame_number != 9 && (game->frames[frame_number].roll_1 + roll) > 10) {
+    if (frame_number != LAST_FRAME && (game->frames[frame_number].roll_1 + roll) > 10) {
         printf("Invalid roll2\n");
-        return 10 - game->frames[frame_number].roll_1;
+        return 0;
     }
     if (   frame_number == 9
         && (game->frames[frame_number].roll_1 + game->frames[frame_number].roll_2) != 10
@@ -217,44 +217,44 @@ static int (check_for_invalid_rolls)(int roll, game_t *game, int frame_number) {
         printf("Invalid roll3\n");
         printf("roll_1: %d, roll_2: %d\n", game->frames[frame_number].roll_1, game->frames[frame_number].roll_2);
         printf("roll: %d\n", roll);
-        return 10;
+        return 0;
     }
     return roll;
 }
 
 void record_roll(game_t *game, int roll, int frame_number, int roll_number)
 {
-    if(roll_number == 0 && frame_number != 9){
+    if(roll_number == 0 && frame_number != LAST_FRAME){
         game->frames[frame_number].roll_1 = check_for_invalid_rolls(roll, game, frame_number);
         return;
     }
-    if(roll_number == 1 && frame_number != 9){
+    if(roll_number == 1 && frame_number != LAST_FRAME){
         game->frames[frame_number].roll_2 = check_for_invalid_rolls(roll, game, frame_number);
         return;
     }
-    if(frame_number == 9 && roll_number == 0)
+    if(frame_number == LAST_FRAME && roll_number == 0)
     {
         game->frames[frame_number].roll_1 = check_for_invalid_rolls(roll, game, frame_number);
         return;
     }
-    if(frame_number == 9 && roll_number == 1){
+    if(frame_number == LAST_FRAME && roll_number == 1){
         game->frames[frame_number].roll_2 = check_for_invalid_rolls(roll, game, frame_number);
         return;
     }
-    if(frame_number == 9 && roll_number == 2){
+    if(frame_number == LAST_FRAME && roll_number == 2){
         game->frames[frame_number].extra_roll = check_for_invalid_rolls(roll, game, frame_number);
         return;
     }
 }
 
-int record_frames(game_t game, int rolls[10][3])
+int record_frames(game_t game, int rolls[10][3], int debug)
 {
     int score = 0;
     for (int i = 0; i < NUM_OF_FRAMES; i++) {
         for (int j = 0; j < 3; ++j) {
             record_roll(&game, rolls[i][j], i, j);
         }
-        score = update_score(game, i);
+        score = update_score(game, i, debug);
     }
     return score;
 }
