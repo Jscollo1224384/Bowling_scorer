@@ -33,5 +33,5 @@ int handle_strike(game_t game, int frame_number);
 int handle_spare(game_t game, int frame_number);
 int handle_open_frame(game_t game, int frame_number);
 int handle_tenth_frame(game_t game);
-int update_score(game_t game, int frame_number);
+int update_score(game_t game, int frame_number, int debug);
 #endif //BOWLING_SCORER_GAME_ATTRIBUTES_H
