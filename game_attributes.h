@@ -28,7 +28,7 @@ typedef struct {
 game_t create_game(void);
 void destroy_game(game_t game);
 void record_roll(game_t *game, int roll, int frame_number, int roll_number);
-int record_frames(game_t game, int rolls[10][3]);
+int record_frames(game_t game, int rolls[10][3], int debug);
 int handle_strike(game_t game, int frame_number);
 int handle_spare(game_t game, int frame_number);
 int handle_open_frame(game_t game, int frame_number);
