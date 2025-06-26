@@ -20,18 +20,18 @@ typedef struct {
     int  extra_roll;
 } frame_t;
 
-typedef struct {
+typedef struct{
     frame_t frames[NUM_OF_FRAMES];
 } game_t;
 
-
-game_t create_game(void);
+void create_game(game_t *game);
 void destroy_game(game_t game);
 void record_roll(game_t *game, int roll, int frame_number, int roll_number);
-int record_frames(game_t game, int rolls[10][3], int debug);
-int handle_strike(game_t game, int frame_number);
-int handle_spare(game_t game, int frame_number);
-int handle_open_frame(game_t game, int frame_number);
-int handle_tenth_frame(game_t game);
-int update_score(game_t game, int frame_number, int debug);
+void record_frames(game_t *game, int frame, int roll_1, int roll_2, int extra_roll);
+int handle_strike(game_t *game, int frame_number);
+int handle_spare(game_t *game, int frame_number);
+int handle_open_frame(game_t *game, int frame_number);
+int handle_tenth_frame(game_t *game);
+int update_score(game_t *game, int frame_number);
+void run_game_loop(game_t *game, int rolls[NUM_OF_FRAMES][3]);
 #endif //BOWLING_SCORER_GAME_ATTRIBUTES_H
