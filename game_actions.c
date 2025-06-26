@@ -75,43 +75,44 @@ static void print_rolls(game_t *game, int frame_number) {
     }
 
     if(frame_number != LAST_FRAME) {
-        if (STRIKE(game.frames[frame_number].roll_1)) {
-            printf(" |X|-|      ");
-        } else if (SPARE(game.frames[frame_number].roll_1, game.frames[frame_number].roll_2)) {
-            printf(" |%d|/|      ", game.frames[frame_number].roll_2);
+        printf(" ");
+        if (STRIKE(game->frames[frame_number].roll_1)) {
+            printf("%-11s","|X|-|");
+        } else if (SPARE(game->frames[frame_number].roll_1, game->frames[frame_number].roll_2)) {
+            printf("|%d|/|%-5s", game->frames[frame_number].roll_2, "");
         } else {
-            printf(" |%d|%d|      ", game.frames[frame_number].roll_1, game.frames[frame_number].roll_2);
+            printf(" |%d|%d|%-6s", game->frames[frame_number].roll_1, game->frames[frame_number].roll_2, "");
         }
     }
     if(frame_number == LAST_FRAME){
-        if(   STRIKE(game.frames[frame_number].roll_1)
-           && STRIKE(game.frames[frame_number].roll_2)
-           && STRIKE(game.frames[frame_number].extra_roll))
+        if(   STRIKE(game->frames[frame_number].roll_1)
+           && STRIKE(game->frames[frame_number].roll_2)
+           && STRIKE(game->frames[frame_number].extra_roll))
         {
             printf(" |X|X|X|");
         }
-        else if(   SPARE(game.frames[frame_number].roll_1, game.frames[frame_number].roll_2)
-                && STRIKE(game.frames[frame_number].extra_roll))
+        else if(   SPARE(game->frames[frame_number].roll_1, game->frames[frame_number].roll_2)
+                && STRIKE(game->frames[frame_number].extra_roll))
         {
-            printf(" |%d|/|X|", game.frames[frame_number].roll_2);
+            printf(" |%d|/|X|", game->frames[frame_number].roll_2);
         }
-        else if(   STRIKE(game.frames[frame_number].roll_1)
-                && SPARE(game.frames[frame_number].roll_2, game.frames[frame_number].extra_roll))
+        else if(   STRIKE(game->frames[frame_number].roll_1)
+                && SPARE(game->frames[frame_number].roll_2, game->frames[frame_number].extra_roll))
         {
-            printf(" |X|%d|/|",game.frames[frame_number].roll_2);
+            printf(" |X|%d|/|",game->frames[frame_number].roll_2);
         }
-        else if(   STRIKE(game.frames[frame_number].roll_1)
-                && OPEN_FRAME(game.frames[frame_number].roll_2, game.frames[frame_number].extra_roll))
+        else if(   STRIKE(game->frames[frame_number].roll_1)
+                && OPEN_FRAME(game->frames[frame_number].roll_2, game->frames[frame_number].extra_roll))
         {
-            printf(" |X|%d|%d|", game.frames[frame_number].roll_2, game.frames[frame_number].extra_roll);
+            printf(" |X|%d|%d|", game->frames[frame_number].roll_2, game->frames[frame_number].extra_roll);
         }
-        else if(   SPARE(game.frames[frame_number].roll_1, game.frames[frame_number].roll_2)
-                && OPEN_FRAME(game.frames[frame_number].extra_roll, 0))
+        else if(   SPARE(game->frames[frame_number].roll_1, game->frames[frame_number].roll_2)
+                && OPEN_FRAME(game->frames[frame_number].extra_roll, 0))
         {
-            printf(" |%d|/|%d|", game.frames[frame_number].roll_2, game.frames[frame_number].extra_roll);
+            printf(" |%d|/|%d|", game->frames[frame_number].roll_2, game->frames[frame_number].extra_roll);
         }
         else{
-            printf(" |%d|%d|-|", game.frames[frame_number].roll_1, game.frames[frame_number].roll_2);
+            printf(" |%d|%d|-|", game->frames[frame_number].roll_1, game->frames[frame_number].roll_2);
         }
     }
 
