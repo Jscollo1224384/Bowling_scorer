@@ -160,17 +160,10 @@ int update_score(game_t *game, int frame_number)
 
     int score = 0;
 
-    if(!debug) {
-        print_frame_header();
-        print_game_results(0, frame_number, game, score, 0);
-        printf("\n");
-    }
-
-    score = 0;
-
     for (int i = 0; i <= frame_number ; ++i) {
         if (i == 9) {
             score += handle_tenth_frame(game);
+            frame_score[i] = score;
         }
         if(i < 9) {
             score += handle_strike(game, i);
