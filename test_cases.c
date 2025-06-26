@@ -356,8 +356,6 @@ void run_tests(void)
     RUN_TEST(test_10_between_two_rolls_is_a_spare);
     RUN_TEST(test_less_than_10_between_two_rolls_is_an_open_frame);
 
-
-
     RUN_TEST(test_a_strike_adds_the_score_of_the_next_two_rolls__next_frame_is_open);
     RUN_TEST(test_a_strike_adds_the_score_of_the_next_two_rolls__next_frame_is_spare);
     RUN_TEST(test_a_strike_adds_the_score_of_the_next_two_rolls__next_frame_is_strike);
@@ -369,7 +367,6 @@ void run_tests(void)
 //  RUN_TEST(test_the_tenth_frame_can_have_three_rolls);
 //  RUN_TEST(test_a_strike_on_the_first_roll_yields_two_more_rolls);
 //  RUN_TEST(test_a_spare_produces_a_third_roll_in_the_tenth_frame);
-
 
     RUN_TEST(test_the_score_of_a_perfect_game_is_300);
     RUN_TEST(test_the_score_of_a_game_is_as_expected);

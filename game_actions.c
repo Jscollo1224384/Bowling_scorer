@@ -1,7 +1,3 @@
-//
-// Created by Joseph-Scollo on 5/9/25.
-//
-
 #include <printf.h>
 #include <string.h>
 #include "game_attributes.h"

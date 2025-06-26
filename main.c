@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "test_cases.h"
-#include "Unity-2.6.1/src/unity.h"
 #include "game_attributes.h"
 
 int main(int argc, char *argv[]) {
