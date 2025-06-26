@@ -104,7 +104,8 @@ void tearDown(void)
 void test_a_game_has_ten_frames(void)
 {
     int expected_frames = 10;
-    game_t game = create_game();
+    game_t game;
+    create_game(&game);
     int actual_frames = 0;
     for (int i = 0; i < NUM_OF_FRAMES; i++) {
         if (game.frames[i].roll_1 == 0 && game.frames[i].roll_2 == 0 && game.frames[i].extra_roll == 0) {
@@ -122,10 +123,11 @@ void test_a_game_has_ten_frames(void)
 void test_a_roll_cant_exceed_10(void)
 {
     int roll_to_record = 11;
-    game_t game = create_game();
+
+    game_t game; 
+    create_game(&game);
     record_roll(&game, roll_to_record, 0, 0);
     TEST_ASSERT_EQUAL(0, game.frames[0].roll_1);
-
     destroy_game(game);
 }
 
@@ -133,7 +135,8 @@ void test_a_roll_cant_be_less_than_0(void)
 {
     int roll_to_record = -1;
     int roll_to_record_2 = -1;
-    game_t game = create_game();
+    game_t game;
+    create_game(&game);
     record_roll(&game, roll_to_record, 0, 0);
     record_roll(&game, roll_to_record_2, 0, 1);
     TEST_ASSERT_EQUAL(0, game.frames[0].roll_1);
@@ -148,7 +151,8 @@ void test_the_sum_of_the_two_rolls_are_not_greater_than_10(void)
     int roll_to_record = 7;
     int roll_to_record_2 = 5;
 
-    game_t game = create_game();
+    game_t game;
+    create_game(&game);
     record_roll(&game, roll_to_record, 0, 0);
     record_roll(&game, roll_to_record_2, 0, 1);
 
@@ -163,7 +167,8 @@ void test_10_between_two_rolls_is_a_spare(void)
 {
     int roll_to_record = 7;
     int roll_to_record_2 = 3;
-    game_t game = create_game();
+    game_t game; 
+    create_game(&game);
     record_roll(&game, roll_to_record, 0, 0);
     record_roll(&game, roll_to_record_2, 0, 1);
     TEST_ASSERT_EQUAL(10, game.frames[0].roll_1 + game.frames[0].roll_2);
@@ -174,7 +179,8 @@ void test_10_between_two_rolls_is_a_spare(void)
 void test_10_on_the_first_roll_is_a_strike(void)
 {
     int roll_to_record = 10;
-    game_t game = create_game();
+    game_t game; 
+    create_game(&game);
     record_roll(&game, roll_to_record, 0, 0);
     TEST_ASSERT_EQUAL(10, game.frames[0].roll_1);
     destroy_game(game);
@@ -184,7 +190,8 @@ void test_less_than_10_between_two_rolls_is_an_open_frame(void)
 {
     int roll_to_record = 5;
     int roll_to_record_2 = 4;
-    game_t game = create_game();
+    game_t game; 
+    create_game(&game);
     record_roll(&game, roll_to_record, 0, 0);
     record_roll(&game, roll_to_record_2, 0, 1);
     TEST_ASSERT_LESS_THAN(10, game.frames[0].roll_1 + game.frames[0].roll_2);
@@ -197,11 +204,12 @@ void test_a_strike_adds_the_score_of_the_next_two_rolls__next_frame_is_open(void
     int roll_to_record = 10;
     int roll_to_record_2 = 5;
     int roll_to_record_3 = 4;
-    game_t game = create_game();
+    game_t game; 
+    create_game(&game);
     record_roll(&game, roll_to_record, 0, 0);
     record_roll(&game, roll_to_record_2, 1, 0);
     record_roll(&game, roll_to_record_3, 1, 1);
-    int score = handle_strike(game, 0);
+    int score = handle_strike(&game, 0);
     TEST_ASSERT_EQUAL(19, score);
 
     destroy_game(game);
@@ -212,11 +220,12 @@ void test_a_strike_adds_the_score_of_the_next_two_rolls__next_frame_is_spare(voi
     int roll_to_record = 10;
     int roll_to_record_2 = 7;
     int roll_to_record_3 = 3;
-    game_t game = create_game();
+    game_t game; 
+    create_game(&game);
     record_roll(&game, roll_to_record, 0, 0);
     record_roll(&game, roll_to_record_2, 1, 0);
     record_roll(&game, roll_to_record_3, 1, 1);
-    int score = handle_strike(game, 0);
+    int score = handle_strike(&game, 0);
     TEST_ASSERT_EQUAL(20, score);
 
     destroy_game(game);
@@ -227,11 +236,12 @@ void test_a_strike_adds_the_score_of_the_next_two_rolls__next_frame_is_strike(vo
     int roll_to_record = 10;
     int roll_to_record_2 = 10;
     int roll_to_record_3 = 5;
-    game_t game = create_game();
+    game_t game; 
+    create_game(&game);
     record_roll(&game, roll_to_record, 0, 0);
     record_roll(&game, roll_to_record_2, 1, 0);
     record_roll(&game, roll_to_record_3, 2, 0);
-    int score = handle_strike(game, 0);
+    int score = handle_strike(&game, 0);
     TEST_ASSERT_EQUAL(25, score);
 
     destroy_game(game);
@@ -242,11 +252,12 @@ void test_a_spare_adds_the_score_of_the_next_roll(void)
     int roll_to_record = 7;
     int roll_to_record_2 = 3;
     int roll_to_record_3 = 4;
-    game_t game = create_game();
+    game_t game; 
+    create_game(&game);
     record_roll(&game, roll_to_record, 0, 0);
     record_roll(&game, roll_to_record_2, 0, 1);
     record_roll(&game, roll_to_record_3, 1, 0);
-    int score = handle_spare(game, 0);
+    int score = handle_spare(&game, 0);
     TEST_ASSERT_EQUAL(14, score);
 
     destroy_game(game);
@@ -257,11 +268,12 @@ void test_a_strike_adds_the_score_of_the_next_two_rolls_in_last_frame(void)
     int roll_to_record = 10;
     int roll_to_record_2 = 5;
     int roll_to_record_3 = 4;
-    game_t game = create_game();
+    game_t game;
+    create_game(&game);
     record_roll(&game, roll_to_record, 9, 0);
     record_roll(&game, roll_to_record_2, 9, 1);
     record_roll(&game, roll_to_record_3, 9, 2);
-    int score = handle_tenth_frame(game);
+    int score = handle_tenth_frame(&game);
     TEST_ASSERT_EQUAL(19, score);
 
     destroy_game(game);
@@ -272,11 +284,12 @@ void test_a_spare_adds_the_score_of_the_next_roll_in_last_frame(void)
     int roll_to_record = 7;
     int roll_to_record_2 = 3;
     int roll_to_record_3 = 4;
-    game_t game = create_game();
+    game_t game; 
+    create_game(&game);
     record_roll(&game, roll_to_record, 9, 0);
     record_roll(&game, roll_to_record_2, 9, 1);
     record_roll(&game, roll_to_record_3, 9, 2);
-    int score = handle_tenth_frame(game);
+    int score = handle_tenth_frame(&game);
     TEST_ASSERT_EQUAL(14, score);
 
     destroy_game(game);
@@ -297,20 +310,33 @@ void test_the_score_of_a_perfect_game_is_300(void)
             {10, 10, 10} // Frame 10: Strike + bonus rolls
     };
     int expected_score = 300;
-    game_t game = create_game();
-    int score = record_frames(game, rolls_perfect_game,1);
+    game_t game; 
+    create_game(&game);
+    int score = 0;
+    for (int i = 0; i < NUM_OF_FRAMES; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            record_roll(&game, rolls_perfect_game[i][j], i, j);
+        }
+    score = update_score(&game, i);
+    }
     TEST_ASSERT_EQUAL(expected_score,score);
     destroy_game(game);
 }
 
 void test_the_score_of_a_game_is_as_expected(void)
 {
-   for (int i = 0; i < 5; i++) {
-       int expected_score = 258;
-       game_t game = create_game();
-       int score = record_frames(game, sample_games[i].game, 1);
-       TEST_ASSERT_EQUAL(sample_games[i].expected_score, score);
-       destroy_game(game);
+    for (int i = 0; i < 5; i++) {
+        game_t game;
+        create_game(&game);
+        int score = 0;
+        for (int j = 0; j < 10; j++) {
+            for (int k = 0; k < 3; k++) {
+                record_roll(&game, sample_games[i].game[j][k], j, k);
+            }
+            score = update_score(&game, j);
+        }
+        TEST_ASSERT_EQUAL(sample_games[i].expected_score, score);
+        destroy_game(game);
     }
 }
 
