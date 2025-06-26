@@ -68,19 +68,7 @@ int handle_spare(game_t *game, int frame_number) {
     return score;
 }
 
-static void print_score_board(game_t game, int frame_number) {
-    char strike[]                  = "|X|-|";
-    char spare[]                   = "|%d|/|";
-    char open[]                    = "|%d|%d|";
-    char last_frame[]              = "|%d|%d|-|";
-    char last_frame_spare[]        = "|%d|/|%d|";
-    char last_frame_spare_strike[] = "|%d|/|X|";
-    char last_frame_strike[]       = "|X|%d|%d|";
-    char last_frame_strike_spare[] = "|X|%|/|";
-    char last_frame_two_strikes[]  = "|X|X|%d|";
-    char last_frame_all_strikes[]  = "|X|X|X|";
-
-    int width = 6;
+static void print_rolls(game_t *game, int frame_number) {
 
     if (frame_number < 0 || frame_number >= NUM_OF_FRAMES) {
         return; // Invalid game or frame number
