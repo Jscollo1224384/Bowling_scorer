@@ -2,11 +2,10 @@
 // Created by Joseph-Scollo on 5/9/25.
 //
 
-#include <stdlib.h>
 #include <printf.h>
 #include <string.h>
 #include "game_attributes.h"
-#define FRAME_WIDTH 10
+
 
 void create_game(game_t *game) {
     memset(game, 0, sizeof(game_t));
