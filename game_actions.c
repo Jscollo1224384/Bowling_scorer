@@ -168,16 +168,11 @@ int update_score(game_t *game, int frame_number)
         if(i < 9) {
             score += handle_strike(game, i);
             score += handle_spare(game, i);
+            frame_score[i] = score;
         }
         score += handle_open_frame(game, i);
-        if(!debug) {
-            print_game_results(1, i, game, score, i);
-        }
+        frame_score[i] = score;
     }
-    if(!debug) {
-        printf("\n\n");
-    }
-
 
     return score;
 }
@@ -230,15 +225,15 @@ void record_roll(game_t *game, int roll, int frame_number, int roll_number)
     }
 }
 
-int record_frames(game_t game, int rolls[10][3], int debug)
+void run_game_loop(game_t *game, int rolls[NUM_OF_FRAMES][3])
 {
     int score = 0;
-    for (int i = 0; i < NUM_OF_FRAMES; i++) {
-        for (int j = 0; j < 3; ++j) {
-            record_roll(&game, rolls[i][j], i, j);
-        }
-        score = update_score(game, i, debug);
-    }
-    return score;
-}
 
+    for (int i = 0; i < NUM_OF_FRAMES; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            record_roll(game, rolls[i][j], i, j);
+        }
+        update_score(game, i);
+        print_score_board(i, game, score);
+    }
+}
