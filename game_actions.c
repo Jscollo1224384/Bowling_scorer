@@ -8,10 +8,8 @@
 #include "game_attributes.h"
 #define FRAME_WIDTH 10
 
-game_t create_game(void) {
-    game_t game;
-    memset(&game, 0, sizeof(game_t));
-    return game;
+void create_game(game_t *game) {
+    memset(game, 0, sizeof(game_t));
 }
 
 void destroy_game(game_t game) {
