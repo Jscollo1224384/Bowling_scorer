@@ -119,7 +119,24 @@ static void print_rolls(game_t *game, int frame_number) {
 
 }
 
+static int frame_score[10];
 
+static void print_score(int score, int frame_number) {
+
+    printf("  ");
+    for (int i = 0; i <= frame_number; ++i) {
+        printf("%-12d", frame_score[i]);
+    }
+    printf("\n");
+
+}
+
+static void print_recoreded_rolls(game_t *game, int frame_number) {
+    for(int i = 0; i <= frame_number; ++i) {
+        print_rolls( game, i);
+    }
+    printf("\n");
+}
 
 static void print_frame_header(void) {
     for (int i = 0; i < NUM_OF_FRAMES; ++i) {
