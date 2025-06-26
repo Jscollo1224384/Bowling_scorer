@@ -21,18 +21,18 @@ void destroy_game(game_t game) {
     }
 }
 
-int handle_strike(game_t game, int frame_number) {
+int handle_strike(game_t *game, int frame_number) {
     int score = 0;
-    int next_frame_first_roll              = game.frames[NEXT_FRAME(frame_number)].roll_1;
-    int frame_after_next_first_roll        = game.frames[NEXT_FRAME(NEXT_FRAME(frame_number))].roll_1;
-    int next_frame_second_roll             = game.frames[NEXT_FRAME(frame_number)].roll_2;
+    int next_frame_first_roll              = game->frames[NEXT_FRAME(frame_number)].roll_1;
+    int frame_after_next_first_roll        = game->frames[NEXT_FRAME(NEXT_FRAME(frame_number))].roll_1;
+    int next_frame_second_roll             = game->frames[NEXT_FRAME(frame_number)].roll_2;
 
     int combined_consecutive_frames_roll_1 = next_frame_first_roll + frame_after_next_first_roll;
     int combined_rolls_of_next_frame       = next_frame_first_roll + next_frame_second_roll;
 
-    if (STRIKE(game.frames[frame_number].roll_1)){
-        if(   STRIKE(game.frames[NEXT_FRAME(frame_number)].roll_1) == false
-           || (STRIKE(game.frames[NEXT_FRAME(frame_number)].roll_1) && NEXT_FRAME(frame_number) == LAST_FRAME))
+    if (STRIKE(game->frames[frame_number].roll_1)){
+        if(   STRIKE(game->frames[NEXT_FRAME(frame_number)].roll_1) == false
+           || (STRIKE(game->frames[NEXT_FRAME(frame_number)].roll_1) && NEXT_FRAME(frame_number) == LAST_FRAME))
         {
             score += 10 + combined_rolls_of_next_frame;
         }
@@ -43,27 +43,27 @@ int handle_strike(game_t game, int frame_number) {
     return score;
 }
 
-int handle_open_frame(game_t game, int frame_number) {
+int handle_open_frame(game_t *game, int frame_number) {
     int score = 0;
 
-    if (OPEN_FRAME(game.frames[frame_number].roll_1, game.frames[frame_number].roll_2)){
-        score += game.frames[frame_number].roll_1 + game.frames[frame_number].roll_2;
+    if (OPEN_FRAME(game->frames[frame_number].roll_1, game->frames[frame_number].roll_2)){
+        score += game->frames[frame_number].roll_1 + game->frames[frame_number].roll_2;
     }
     return score;
 }
 
-int handle_tenth_frame(game_t game) {
+int handle_tenth_frame(game_t *game) {
     int score = 0;
-    if (STRIKE(game.frames[LAST_FRAME].roll_1) || SPARE(game.frames[LAST_FRAME].roll_1, game.frames[LAST_FRAME].roll_2)) {
-        score += game.frames[LAST_FRAME].roll_1 + game.frames[LAST_FRAME].roll_2 + game.frames[LAST_FRAME].extra_roll;
+    if (STRIKE(game->frames[LAST_FRAME].roll_1) || SPARE(game->frames[LAST_FRAME].roll_1, game->frames[LAST_FRAME].roll_2)) {
+        score += game->frames[LAST_FRAME].roll_1 + game->frames[LAST_FRAME].roll_2 + game->frames[LAST_FRAME].extra_roll;
     }
     return score;
 }
 
-int handle_spare(game_t game, int frame_number) {
+int handle_spare(game_t *game, int frame_number) {
     int score = 0;
-    if (SPARE(game.frames[frame_number].roll_1, game.frames[frame_number].roll_2)) {
-        score += 10 + game.frames[NEXT_FRAME(frame_number)].roll_1;
+    if (SPARE(game->frames[frame_number].roll_1, game->frames[frame_number].roll_2)) {
+        score += 10 + game->frames[NEXT_FRAME(frame_number)].roll_1;
     }
     return score;
 }
