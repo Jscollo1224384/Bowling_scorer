@@ -145,28 +145,14 @@ static void print_frame_header(void) {
     printf("\n");
 }
 
-static void print_game_results(int print_type, int frame_number, game_t game, int score, int index) {
-    if(print_type == 0) {
-        for (int i = 0; i <= frame_number; i++) {
-            print_score_board(game, i);
-        }
-    }
-    else{
-        if(score > 99) {
-            if(index != 9) {
-                printf("  %d       ", score);
-            }
-            else{
-                printf("   %d     ", score);
-            }
-        }
-        else{
-            printf("  %d        ", score);
-        }
-    }
+static void print_score_board(int frame_number, game_t *game, int score) {
+
+    print_frame_header();
+    print_recoreded_rolls(game, frame_number);
+    print_score(score, frame_number);
 }
 
-int update_score(game_t game, int frame_number, int debug)
+int update_score(game_t *game, int frame_number)
 {
     if (frame_number < 0 || frame_number >= NUM_OF_FRAMES) {
         return 0; // Invalid game or frame number
