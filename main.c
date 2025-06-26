@@ -35,8 +35,9 @@ int main(int argc, char *argv[]) {
         {10, 0, 0}, // Frame 9: Strike
         {10, 10, 10} // Frame 10: Strike + bonus rolls
     };
-    game_t game = create_game();
-    record_frames(game, rolls_game, 0);
+    game_t game;
+    create_game(&game);
+    run_game_loop(&game, rolls_game);
 
-    return 0;
+
 }
